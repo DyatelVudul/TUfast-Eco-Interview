@@ -1,0 +1,25 @@
+name: Python Tests
+
+on:
+  push:
+    paths:
+      - 'Python/**'
+  pull_request:
+    paths:
+      - 'Python/**'
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: [Task_1, Task_2, Task_3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install pytest
+      - name: Run tests
+        run: python3 -m pytest test_sol.py -v
+        working-directory: Python/${{ matrix.task }}

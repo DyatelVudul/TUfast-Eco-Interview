@@ -1,0 +1,26 @@
+name: C++ Tests
+
+on:
+  push:
+    paths:
+      - 'C++/**'
+  pull_request:
+    paths:
+      - 'C++/**'
+
+jobs:
+  cpp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: [Task_1, Task_2, Task_3]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Google Test
+        uses: actions/cache@v4
+        with:
+          path: C++/${{ matrix.task }}/build/_deps
+          key: gtest-${{ matrix.task }}-${{ hashFiles(format('C++/{0}/CMakeLists.txt', matrix.task)) }}
+      - name: Run tests
+        run: ./run_tests.sh
+        working-directory: C++/${{ matrix.task }}
